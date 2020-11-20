@@ -1,0 +1,15 @@
+# dev
+.vscode/
+
+# node.js
+node_modules/
+package-lock.json
+
+# MacOS
+.DS_Store
+
+# environment variables
+.env
+
+# else 
+.files/
