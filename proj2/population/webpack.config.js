@@ -1,9 +1,6 @@
-// NOTE: To use this example standalone (e.g. outside of deck.gl repo)
-// delete the local development overrides at the bottom of this file
-
 const webpack = require('webpack');
+const dotenv = require('dotenv-webpack');
 
-//const CONFIG = {
 module.exports = {
   mode: 'development',
 
@@ -29,7 +26,8 @@ module.exports = {
       }
     ]
   },
-  // Optional: Enables reading mapbox token from environment variable
-  plugins: [new webpack.EnvironmentPlugin(['MapboxAccessToken'])]
-};
 
+  plugins: [new dotenv({
+    path: '../.env'
+  })]
+};
