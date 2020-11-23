@@ -147,7 +147,7 @@ export function renderToDOM(container) {
       let dict_population = {};
       for(const row of result.data) {
           // 두 데이터의 동이름을 같게 하기 위해 인구데이터의 동이름에 포함된 "."를 모두 "·"로 치환
-          let key = row[2].replaceAll(".","·"); 
+          let key = row[2].replace(/\./g,"·");
 
           dict_population[key] = {
             total:parseIntComma(row[4]),  // 총인구수
