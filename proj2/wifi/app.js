@@ -2,6 +2,7 @@ import React from 'react';
 import {render} from 'react-dom';
 import {StaticMap} from 'react-map-gl';
 import {AmbientLight, PointLight, LightingEffect} from '@deck.gl/core';
+import {IconLayer} from '@deck.gl/layers';
 import {HexagonLayer} from '@deck.gl/aggregation-layers';
 import DeckGL from '@deck.gl/react';
 import {readString} from "react-papaparse";
@@ -48,20 +49,13 @@ const INITIAL_VIEW_STATE = {
 // 더 많은 세팅: https://colorbrewer2.org
 // set "Number of data classes" to 6
 export const colorRange = [
-  [237,248,251],
-  [204,236,230],
-  [153,216,201],
-  [102,194,164],
-  [44,162,95],
-  [0,109,44]
-/*
-  [1, 152, 189],
-  [73, 227, 206],
-  [216, 254, 181],
-  [254, 237, 177],
-  [254, 173, 84],
-  [209, 55, 78]
-  */
+  [255, 255, 255, 30],
+  [255, 255, 255, 60],
+  [255, 255, 255, 90],
+  [255, 255, 255, 120],
+  [255, 255, 255, 150],
+  [255, 255, 255, 180],
+  [255, 255, 255, 210],
 ];
 
 function getTooltip({object}) {
@@ -82,31 +76,47 @@ function getTooltip({object}) {
 export default function App({
   data,
   mapStyle = 'mapbox://styles/mapbox/dark-v9',
-  radius = 600,  
+  radius = 800,
   lowerPercentile = 0,
   upperPercentile = 100,
-  coverage = 1
+  coverage = 0.86
 }) {
   const layers = [
-    // reference: https://deck.gl/docs/api-reference/aggregation-layers/hexagon-layer
+    // // reference: https://deck.gl/docs/api-reference/aggregation-layers/hexagon-layer
     new HexagonLayer({
       id: 'wifi',
       colorRange,
       coverage,
       data,
-      elevationRange: [0, 100],
-      elevationScale: data && data.length ? 50 : 0,
-      extruded: true,
+      // elevationRange: [50, 500],
+      // elevationScale: 5, //data && data.length ? 50 : 0,
+      extruded: false,
       getPosition: d => d,
       pickable: true,
       radius,
-      upperPercentile,
+      // upperPercentile,
       material,
+      // transitions: {
+      //   elevationScale: 50
+      // }
+    }),
+    new IconLayer({
+      id: 'icon-layer',
+      data,
+      pickable: true,
+      // iconAtlas and iconMapping are required
+      // getIcon: return a string
+      iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
+      iconMapping: {
+        marker: {x: 0, y: 0, width: 128, height: 128, mask: true, anchorY: 128}
+      },
+      getIcon: d => 'marker',
+      sizeScale: 5,
+      getPosition: d => d,
+      getSize: d => 7,
+      getColor: d => [0, 192, 72]
+    }),
 
-      transitions: {
-        elevationScale: 50
-      }
-    })
   ];
 
   return (
@@ -134,43 +144,15 @@ function is_coordinates_valid(lng,lat) {
     && lat <= 90);
 }
 
-export function renderToDOM(container) {
-
-    // CSV version
-    fetch("locs_wifi_Seoul-UTF8.csv")
+async function renderBikestop(container) {
+  // read CSV file
+  const BIKESTOP_DATA = await fetch("data/공공자전거 대여소 정보(20.07.13 기준) UTF-8.csv")
     .then(response => response.text())
-    .then(function(text) {
+    .then(text => readString(text).data.map(d => [Number(d[5]), Number(d[4])]))
 
-      const result = readString(text);
+  render(<App data={BIKESTOP_DATA} />, container);
+}
 
-      const data = result.data
-          // d[6] = longitude(경도), d[7] = latitude(위도)
-        .map(d => [Number(d[6]), Number(d[7])])
-        // 위도&경도 유효성 검사
-        .filter(d =>  
-          Number.isFinite(d[0]) 
-          && Number.isFinite(d[1]) 
-          && d[1] >= -90 
-          && d[1] <= 90);
-
-      render(<App data={data} />, container);
-    });
-
-  /*
-    // JSON version
-    fetch("locs_wifi_Seoul.json")
-    .then(response => response.json())
-    .then(function(json) {
-
-      const data = json.DATA
-        .map(d => [Number(d.instl_x), Number(d.instl_y)])
-        .filter(d =>  
-          Number.isFinite(d[0]) 
-          && Number.isFinite(d[1]) 
-          && d[1] >= -90 
-          && d[1] <= 90);
-
-      render(<App data={data} />, container);
-    });
-  */
+export function renderToDOM(container) {
+  renderBikestop(container);
 }
