@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {render} from 'react-dom';
 import {StaticMap} from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
@@ -10,7 +10,6 @@ import {scaleSequential} from 'd3-scale';
 import {interpolateReds} from 'd3-scale-chromatic';
 // import {readString} from "react-papaparse";
 
-// "MapboxAccessToken" 환경변수값
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; 
 
 export const COLOR_SCALE = x =>
@@ -60,11 +59,8 @@ function getTooltip({object}) {
 
 export default function App({data = DATA_URL, mapStyle = 'mapbox://styles/mapbox/light-v9'}) {
 
-  const [effects] = useState(() => {
-    const lightingEffect = new LightingEffect({ambientLight, dirLight});
-    lightingEffect.shadowColor = [0, 0, 0, 0.5];
-    return [lightingEffect];
-  });
+  const lightingEffect = new LightingEffect({ambientLight, dirLight});
+  lightingEffect.shadowColor = [0, 0, 0, 0.5];
 
   const layers = [
     // reference: https://deck.gl/docs/api-reference/layers/geojson-layer
@@ -86,7 +82,7 @@ export default function App({data = DATA_URL, mapStyle = 'mapbox://styles/mapbox
   return (
     <DeckGL
       layers={layers}
-      effects={effects}
+      effects={[lightingEffect]}
       initialViewState={INITIAL_VIEW_STATE}
       controller={true}
       getTooltip={getTooltip}
