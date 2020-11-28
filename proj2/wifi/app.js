@@ -137,13 +137,6 @@ export default function App({
   );
 }
 
-function is_coordinates_valid(lng,lat) {
-  return (Number.isFinite(lng) 
-    && Number.isFinite(lat) 
-    && lat >= -90 
-    && lat <= 90);
-}
-
 async function renderBikestop(container) {
   // read CSV file
   const BIKESTOP_DATA = await fetch("data/공공자전거 대여소 정보(20.07.13 기준) UTF-8.csv")
