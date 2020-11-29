@@ -96,8 +96,8 @@ export default function App({
   data,
   mapStyle = 'mapbox://styles/mapbox/dark-v9',
 }) {
+  // reference: https://deck.gl/docs/api-reference/aggregation-layers/hexagon-layer
   const layers = [
-    // // reference: https://deck.gl/docs/api-reference/aggregation-layers/hexagon-layer
     new HexagonLayer({
       id: 'wifi',
       colorRange,
@@ -113,15 +113,15 @@ export default function App({
       id: 'icon-layer',
       data,
       pickable: true,
-      iconAtlas: 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png',
+      iconAtlas: './img/dot.png',
       iconMapping: {
-        marker: {x: 0, y: 0, width: 128, height: 128, mask: true, anchorY: 128}
+        marker: {x: 0, y: 0, width: 64, height: 64, mask: true, anchorY: 64}
       },
       getIcon: d => 'marker',
-      sizeScale: 5,
+      sizeScale: 1,
       getPosition: d => [Number(d[5]), Number(d[4])],
-      getSize: d => 6,
-      getColor: d => [0, 192, 72]
+      getSize: d => 7,
+      getColor: d => [0, 206, 84]
     }),
 
   ];
