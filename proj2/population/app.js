@@ -102,7 +102,7 @@ export default function App({data = DATA_URL, mapStyle = 'mapbox://styles/mapbox
 }
 
 async function renderCOVID19(container) {
-  const FILE_NAME_COVID19    = 'data/서울시 코로나19 확진자 현황 201122.json';
+  const FILE_NAME_COVID19    = 'data/서울시 코로나19 확진자 현황 201128.json';
   const FILE_NAME_GEOJSON    = 'data/SIG_202005/SIG_WGS84.json';
   const FILE_NAME_POPULATION = 'data/서울시 주민등록인구 (구별) 통계.txt';
   const FILE_NAME_AREA       = 'data/서울시 행정구역 (구별) 통계.txt';
