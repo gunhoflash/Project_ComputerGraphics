@@ -27,7 +27,8 @@ module.exports = {
     ]
   },
 
-  plugins: [new dotenv({
-    path: '../.env'
-  })]
+  plugins: [
+    new dotenv({ path: '../.env' }),
+    new webpack.EnvironmentPlugin(['MapboxAccessToken']),
+  ]
 };
