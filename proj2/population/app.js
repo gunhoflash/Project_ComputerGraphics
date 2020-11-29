@@ -4,16 +4,14 @@ import {StaticMap} from 'react-map-gl';
 import DeckGL from '@deck.gl/react';
 import {GeoJsonLayer} from '@deck.gl/layers';
 import {LightingEffect, AmbientLight, _SunLight as SunLight} from '@deck.gl/core';
-//import {scaleThreshold} from 'd3-scale';
 import {scaleSequential} from 'd3-scale';
-//import {interpolateRainbow} from 'd3-scale-chromatic';
 import {interpolateReds} from 'd3-scale-chromatic';
 import {readString} from "react-papaparse";
 
 const MAPBOX_TOKEN = process.env.MapboxAccessToken; 
 
+// https://github.com/d3/d3-scale-chromatic
 export const COLOR_SCALE = x =>
-  // https://github.com/d3/d3-scale-chromatic
     (
       scaleSequential()
       .domain([0, 1])
@@ -66,8 +64,7 @@ function getTooltip({object}) {
   );
 }
 
-export default function App({data = DATA_URL, mapStyle = 'mapbox://styles/mapbox/light-v9'}) {
-
+export default function App({data, mapStyle = 'mapbox://styles/mapbox/light-v9'}) {
   // reference: https://deck.gl/docs/api-reference/layers/geojson-layer
   const layers = [
     new GeoJsonLayer({

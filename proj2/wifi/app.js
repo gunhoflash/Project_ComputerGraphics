@@ -7,7 +7,6 @@ import {HexagonLayer} from '@deck.gl/aggregation-layers';
 import DeckGL from '@deck.gl/react';
 import {readString} from "react-papaparse";
 
-// Set your mapbox token here
 const MAPBOX_TOKEN = process.env.MapboxAccessToken;
 
 const ambientLight = new AmbientLight({
@@ -46,8 +45,7 @@ const INITIAL_VIEW_STATE = {
   bearing: 15
 };
 
-// 더 많은 세팅: https://colorbrewer2.org
-// set "Number of data classes" to 6
+// refer: https://colorbrewer2.org
 export const colorRange = [
   [226, 232, 255, 40],
   [226, 232, 255, 70],
@@ -92,10 +90,7 @@ function getTooltip({object}) {
 }
 
 /* eslint-disable react/no-deprecated */
-export default function App({
-  data,
-  mapStyle = 'mapbox://styles/mapbox/dark-v9',
-}) {
+export default function App({data, mapStyle = 'mapbox://styles/mapbox/dark-v9'}) {
   // reference: https://deck.gl/docs/api-reference/aggregation-layers/hexagon-layer
   const layers = [
     new HexagonLayer({
@@ -122,8 +117,7 @@ export default function App({
       getPosition: d => [Number(d[5]), Number(d[4])],
       getSize: d => 7,
       getColor: d => [0, 206, 84]
-    }),
-
+    })
   ];
 
   return (
